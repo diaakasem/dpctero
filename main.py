@@ -15,11 +15,11 @@ api = tweepy.API(auth)
 tweets = []
 
 for tweet in tweepy.Cursor(api.search, q='egypt', rpp=100).items(1000):
-    if tweet.geo: 
+    #if tweet.geo: 
         # print tweet.withheld_in_countries
-        print tweet.id
-        print tweet.place
-        print tweet.geo
-        print tweet.created_at
-        print tweet.text
-        print '='*80
+    print tweet.id
+    print tweet.place
+    print tweet.geo
+    print tweet.created_at
+    print tweet.text
+    print '='*80
