@@ -10,6 +10,6 @@
 angular.module('terrometerApp')
   .service('Tweet', function (Restangular) {
     var service = Restangular.all('tweet');
-    service.addRestangularMethod('getTweets', 'post', 'gettweets');
+    service.addRestangularMethod('getTweets', 'get', 'gettweets');
     return service;
   });

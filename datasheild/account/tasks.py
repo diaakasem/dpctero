@@ -1,5 +1,5 @@
-from datasheild.settings import celery_app as app
+from datasheild.settings import celery_app as celery
 
-@app.task
+@celery.task
 def add(x, y):
     return x + y
