@@ -13,19 +13,28 @@ Including another URLconf
     1. Add an import:  from blog import urls as blog_urls
     2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
-from django.conf.urls import include, url
+from tastypie.api import Api
 from django.contrib import admin
+from django.conf.urls import include, url
+from django.conf.urls.i18n import i18n_patterns
+from django.conf.urls.static import static
+from django.conf import settings
 from tweet.api import TweetResource
 from hash.api import HashResource
 from account.api import AccountResource
+import logging
+# Get an instance of a logger
+logger = logging.getLogger(__name__)
 
-tweet_resource = TweetResource()
-hash_resource = HashResource()
-account_resource = AccountResource()
+v1_api = Api(api_name='v1')
 
-urlpatterns = [
+v1_api.register(TweetResource())
+v1_api.register(AccountResource())
+v1_api.register(HashResource())
+
+# API Entry Point
+urlpatterns = i18n_patterns('',
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^api/tweet/', include(tweet_resource.urls)),
-    url(r'^api/hash/', include(hash_resource.urls)),
-    url(r'^api/account/', include(account_resource.urls)),
-]
+    url(r'^api/', include(v1_api.urls)),
+) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

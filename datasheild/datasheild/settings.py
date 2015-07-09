@@ -36,6 +36,7 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
+TASTYPIE_ALLOW_MISSING_SLASH = True
 
 INSTALLED_APPS = (
     'django.contrib.admin',
@@ -45,6 +46,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'audit_log',
+    'tastypie',
 
     'tweet',
     'hash',

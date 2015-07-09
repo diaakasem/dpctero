@@ -8,6 +8,6 @@
  * Service in the terrometerApp.
  */
 angular.module('terrometerApp')
-  .service('tweet', function () {
+  .service('Tweet', function (Restangular) {
     return Restangular.all('tweet');
   });

@@ -11,7 +11,13 @@ angular.module('terrometerApp')
     return {
       templateUrl: 'views/directives/topnav.html',
       restrict: 'E',
-      link: function postLink(scope, element, attrs) {
+      controller: function controller($scope, Tweet) {
+
+          $scope.getTweets = function() {
+              Tweet.getList().then(function() {
+                  alert("DOne");
+              });
+          };
       }
     };
   });

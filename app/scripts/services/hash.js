@@ -8,6 +8,6 @@
  * Service in the terrometerApp.
  */
 angular.module('terrometerApp')
-  .service('hash', function () {
+  .service('hash', function (Restangular) {
     return Restangular.all('hash');
   });

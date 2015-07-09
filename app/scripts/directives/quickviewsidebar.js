@@ -11,7 +11,7 @@ angular.module('terrometerApp')
     return {
       templateUrl: 'views/directives/quickviewsidebar.html',
       restrict: 'E',
-      link: function postLink(scope, element, attrs) {
+      link: function postLink() {
       }
     };
   });
