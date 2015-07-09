@@ -1,8 +1,9 @@
 from tastypie.resources import ModelResource
 from .models import Account
+from datashield.api import MainResource
 
 
-class AccountResource(ModelResource):
+class AccountResource(MainResource):
 
     class Meta:
         queryset = Account.objects.all()
