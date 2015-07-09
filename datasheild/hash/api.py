@@ -7,4 +7,3 @@ class HashResource(MainResource):
     class Meta:
         queryset = Hash.objects.all()
         resource_name = 'hash'
-

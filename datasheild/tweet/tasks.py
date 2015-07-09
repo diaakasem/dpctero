@@ -11,6 +11,7 @@ auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth)
 
+
 @app.task
 def tweets():
     tweet_str = []
@@ -31,5 +32,3 @@ def tweets():
     f = open('~/workfile', 'w')
     all = '<br/>'.join(tweet_str)
     f.write(all)
-
-
