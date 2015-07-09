@@ -29,6 +29,7 @@ def tweets():
         tweets = ', '.join(tweets)
         tweet_str.append(tweets)
 
-    f = open('~/workfile', 'w')
+    f = open('/Users/dino/workfile', 'w+')
     all = '<br/>'.join(tweet_str)
-    f.write(all)
+    f.write(all.encode('utf-8'))
+    f.close()

@@ -34,9 +34,14 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+def relative_path(*pathes):
+    '''returns absolute path to dir'''
+    return os.path.join(BASE_DIR, *pathes).replace('\\', '/')
+
 
 # Application definition
 TASTYPIE_ALLOW_MISSING_SLASH = True
+STATIC_ROOT = relative_path('staticfiles')
 
 INSTALLED_APPS = (
     'django.contrib.admin',
@@ -61,7 +66,6 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.security.SecurityMiddleware',
 )
 
 ROOT_URLCONF = 'datasheild.urls'

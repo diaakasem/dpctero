@@ -14,7 +14,7 @@ angular.module('terrometerApp')
       controller: function controller($scope, Tweet) {
 
           $scope.getTweets = function() {
-              Tweet.getList().then(function() {
+              Tweet.getTweets().then(function() {
                   alert("DOne");
               });
           };

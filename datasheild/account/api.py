@@ -1,6 +1,6 @@
 from tastypie.resources import ModelResource
 from .models import Account
-from datashield.api import MainResource
+from core.api import MainResource
 
 
 class AccountResource(MainResource):

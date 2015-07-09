@@ -15,8 +15,7 @@ Including another URLconf
 """
 from tastypie.api import Api
 from django.contrib import admin
-from django.conf.urls import include, url
-from django.conf.urls.i18n import i18n_patterns
+from django.conf.urls import include, url, patterns
 from django.conf.urls.static import static
 from django.conf import settings
 from tweet.api import TweetResource
@@ -33,8 +32,8 @@ v1_api.register(AccountResource())
 v1_api.register(HashResource())
 
 # API Entry Point
-urlpatterns = i18n_patterns('',
+urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^api/', include(v1_api.urls)),
-) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

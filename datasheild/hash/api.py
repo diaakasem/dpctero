@@ -1,5 +1,5 @@
 from .models import Hash
-from datashield.api import MainResource
+from core.api import MainResource
 
 
 class HashResource(MainResource):
