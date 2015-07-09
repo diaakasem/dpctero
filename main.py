@@ -1,25 +1,25 @@
+from flask import Flask
+from .tasks import tweets
+# from sqlalchemy.dialects import mysql
+# from sqlalchemy import types
 
-import tweepy
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
 
-consumer_key = 'AqZSjhlK8V5sORLe2uX7MDxhV'
-consumer_secret = 'KQa4x3HBnD5fwDBYcbJU8dzaJxV1FmzGw6XBbTRwlZuXL3vgMv'
 
-access_token = '52365348-lfR9z81SrbtUB3YfcX0QvKFf7FxVtnduoarAvVChs'
-access_token_secret = 'rVzZxfKDbMCS4VmvsKJw4qfCkRylsaK7kQrJF4KPBddeP'
+def init_db():
+    # import all modules here that might define models so that
+    # they will be registered properly on the metadata.  Otherwise
+    # you will have to import them first before calling init_db()
+    import yourapplication.models
+    Base.metadata.create_all(bind=engine)
 
-auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-auth.set_access_token(access_token, access_token_secret)
 
-api = tweepy.API(auth)
+@app.route("/")
+def index():
+    tweets.delay()
+    return "delayed"
 
-tweets = []
-
-for tweet in tweepy.Cursor(api.search, q='egypt', rpp=100).items(1000):
-    #if tweet.geo: 
-        # print tweet.withheld_in_countries
-    print tweet.id
-    print tweet.place
-    print tweet.geo
-    print tweet.created_at
-    print tweet.text
-    print '='*80
+if __name__ == "__main__":
+    app.debug = True
+    app.run()
