@@ -1,3 +1,4 @@
+from datasheild.settings import celery_app as app
 import tweepy
 
 consumer_key = 'AqZSjhlK8V5sORLe2uX7MDxhV'
@@ -10,6 +11,7 @@ auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth)
 
+@app.task
 def tweets():
     tweet_str = []
 
@@ -26,6 +28,8 @@ def tweets():
         tweets = ', '.join(tweets)
         tweet_str.append(tweets)
 
-    return '<br/>'.join(tweet_str)
+    f = open('~/workfile', 'w')
+    all = '<br/>'.join(tweet_str)
+    f.write(all)
 
 
