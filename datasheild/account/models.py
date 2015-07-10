@@ -5,11 +5,21 @@ from datasheild.models import TimeStamped
 
 
 class Account(TimeStamped):
+
+    account_id = models.CharField(max_length=150, blank=True, null=True, db_index=True)
+    description = models.CharField(max_length=1000, blank=True, null=True)
+    favourites_count = models.IntegerField(default=0)
+    followers_count = models.IntegerField(default=0)
+    geo_enabled = models.BooleanField(default=True)
+    location = models.CharField(max_length=255, blank=True, null=True)
+    name = models.CharField(max_length=150, blank=True, null=True, db_index=True)
+    screen_name = models.CharField(max_length=255, blank=True, null=True, db_index=True)
+    url = models.CharField(max_length=255, blank=True, null=True)
+    verified = models.BooleanField(default=True)
+    weight = models.PositiveIntegerField(null=True, default=100)
+
     hashes = models.ManyToManyField(
         Hash, null=True, blank=True, related_name='account_set')
-    username = models.CharField(max_length=150, blank=True, null=True)
-    email = models.CharField(max_length=255, blank=True, null=True)
-    weight = models.PositiveIntegerField(null=True, default=100)
 
     class Meta:
         verbose_name = _('Hash')

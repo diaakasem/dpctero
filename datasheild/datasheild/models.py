@@ -6,7 +6,7 @@ logger = logging.getLogger(__name__)
 
 
 class TimeStamped(AuthStampedModel):
-    creation_date = models.DateTimeField(editable=False, auto_now_add=True)
+    created_at = models.DateTimeField(editable=False, auto_now_add=True)
     last_modified = models.DateTimeField(editable=False, auto_now=True)
 
     class Meta:

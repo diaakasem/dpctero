@@ -1,4 +1,6 @@
 from datasheild.settings import celery_app as app
+from .models import Tweet
+from account.models import Account
 import tweepy
 
 consumer_key = 'AqZSjhlK8V5sORLe2uX7MDxhV'
@@ -14,22 +16,48 @@ api = tweepy.API(auth)
 
 @app.task
 def tweets():
-    tweet_str = []
+    tweets = []
 
     for tweet in tweepy.Cursor(api.search, q='egypt', rpp=100).items(10):
-        # if tweet.geo:
-            # print tweet.withheld_in_countries
-        tweets = []
-        tweets.append('%s' % tweet.id)
-        tweets.append('%s' % tweet.id)
-        tweets.append('%s' % tweet.place)
-        tweets.append('%s' % tweet.geo)
-        tweets.append('%s' % tweet.created_at)
-        tweets.append('%s' % tweet.text)
-        tweets = ', '.join(tweets)
-        tweet_str.append(tweets)
+        latitude = None
+        longitude = None
+        if tweet.geo:
+            latitude = tweet.geo.latitude
+            longitude = tweet.geo.longitude
+        print dir(tweet)
+        print '='*80
+        print dir(tweet.author)
+        print '='*80
+        accounts = Account.objects.filter(account_id=tweet.author.id_str)
+        if accounts.count():
+            account = accounts.first()
+        else:
+            tAccount = tweet.author
+            account = Account(
+                account_id=tAccount.id_str,
+                description=tAccount.description,
+                favourites_count=tAccount.favourites_count,
+                followers_count=tAccount.followers_count,
+                geo_enabled=tAccount.geo_enabled,
+                location=tAccount.location,
+                name=tAccount.name,
+                screen_name=tAccount.screen_name,
+                url=tAccount.url,
+                verified=tAccount.verified
+                )
+            account.save()
 
-    f = open('/Users/dino/workfile', 'w+')
-    all = '<br/>'.join(tweet_str)
-    f.write(all.encode('utf-8'))
-    f.close()
+        tweets.append(Tweet(
+            tweet_id=tweet.id_str,
+            place=tweet.place,
+            latitude=latitude,
+            longitude=longitude,
+            created_at=tweet.created_at,
+            text=tweet.text,
+            retweet_count=tweet.retweet_count,
+            retweeted=tweet.retweeted,
+            favorite_count=tweet.favorite_count,
+            favorited=tweet.favorited,
+            account=account
+            ))
+    Tweet.objects.bulk_create(tweets)
