@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 """
 Django settings for datasheild project.
 
@@ -13,7 +11,9 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 """
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+from __future__ import absolute_import
 import os
+from datetime import timedelta
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -116,6 +116,15 @@ USE_L10N = True
 
 USE_TZ = True
 
+CELERYBEAT_SCHEDULE = {
+    'Get Tweets Every 15 Minutes': {
+        'task': 'tweet.tasks.tweet',
+        'schedule': timedelta(minutes=15),
+        'args': ()
+    },
+}
+
+CELERY_TIMEZONE = 'UTC'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
