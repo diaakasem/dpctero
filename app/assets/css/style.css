@@ -1555,7 +1555,7 @@ body:not(.sidebar-collapsed) .topbar .header-left .topnav .menutoggle:hover .men
   margin: 0;
 }
 .sidebar .logopanel h1 a {
-  background: url(../images/logo/logo-white.png) no-repeat;
+  background: url(../images/logo/website.png) no-repeat;
   display: block;
   height: 31px;
 }
