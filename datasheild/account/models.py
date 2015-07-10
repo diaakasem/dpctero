@@ -21,6 +21,13 @@ class Account(TimeStamped):
     hashes = models.ManyToManyField(
         Hash, null=True, blank=True, related_name='account_set')
 
+    def save(self):
+        self.weight = 0
+        for t in self.tweet_set:
+            self.weight = self.weight + t.weight
+        super(Account, self).save()
+
+
     class Meta:
         verbose_name = _('Hash')
         verbose_name_plural = _('Hashes')

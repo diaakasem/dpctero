@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from datasheild.models import TimeStamped
+from datetime import datetime, timedelta
 
 
 class Hash(TimeStamped):
@@ -8,7 +9,22 @@ class Hash(TimeStamped):
     weight = models.PositiveIntegerField(null=True, default=100)
     start_time = models.DateTimeField(null=True)
     end_time = models.DateTimeField(null=True)
+    # In Hours
+    period = models.IntegerField(null=True)
     related_country = models.CharField(max_length=255, null=True)
+
+    def save(self):
+        #do some custom processing here: Example: convert Image resolution to a normalized value
+        if not self.start_time:
+            self.start_time = datetime.now()
+        self.end_time = datetime.now()
+        self.period = (self.end_time - self.start_time) // 3600
+        # TODO: MAKE WEIGHT
+        self.weight = 0
+        for t in self.tweet_set:
+            self.weight = self.weight + t.weight
+        self.weight = self.weight / self.tweet_set.count() 
+        super(Hash, self).save()
 
     class Meta:
         verbose_name = _('Hash')
