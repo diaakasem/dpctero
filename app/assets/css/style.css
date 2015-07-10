@@ -1531,7 +1531,7 @@ body:not(.sidebar-collapsed) .topbar .header-left .topnav .menutoggle:hover .men
 }
 .sidebar .logopanel {
   background: #202226;
-  height: 50px;
+  height: 80px;
   left: 0;
   padding: 10px;
   position: fixed;
@@ -1551,13 +1551,13 @@ body:not(.sidebar-collapsed) .topbar .header-left .topnav .menutoggle:hover .men
   font-weight: 900;
   font-size: 30px;
   letter-spacing: -1.5px;
-  line-height: 31px;
+  line-height: 80px;
   margin: 0;
 }
 .sidebar .logopanel h1 a {
   background: url(../images/logo/website.png) no-repeat;
   display: block;
-  height: 31px;
+  height: 60px;
 }
 .sidebar .logopanel h1 span {
   color: #E6E7E8;
@@ -1567,6 +1567,7 @@ body:not(.sidebar-collapsed) .topbar .header-left .topnav .menutoggle:hover .men
   margin-top: -4px;
 }
 .sidebar .sidebar-inner {
+  margin-top: 50px;
   background-color: #2b2e33;
   height: 100%;
   padding: 0;
