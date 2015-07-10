@@ -28,6 +28,16 @@ app.config(function ($routeProvider) {
         controller: 'AboutCtrl',
         controllerAs: 'about'
     })
+    .when('/contact', {
+      templateUrl: 'views/contact.html',
+      controller: 'ContactCtrl',
+      controllerAs: 'contact'
+    })
+    .when('/terms', {
+      templateUrl: 'views/terms.html',
+      controller: 'TermsCtrl',
+      controllerAs: 'terms'
+    })
     .otherwise({
         redirectTo: '/'
     });
