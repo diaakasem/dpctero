@@ -86,12 +86,6 @@ app.run(function(Restangular) {
         if (operation === "getList" && data.meta && !_.isArray(data)) {
             extractedData = data.objects || [];
             extractedData.meta = data.meta;
-        } else {
-            // If paginable GET operation
-            if (paginable.indexOf(what) > -1) {
-                Common.pagination = data.meta;
-                root.$broadcast('list_response');
-            }
         }
         // Don't move this inside the above if statement
         // because data might be altered in cache service Interceptors

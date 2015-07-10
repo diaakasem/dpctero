@@ -21,7 +21,7 @@ class Hash(TimeStamped):
         self.period = (self.end_time - self.start_time) // 3600
         # TODO: MAKE WEIGHT
         self.weight = 0
-        for t in self.tweet_set:
+        for t in self.tweet_set.all():
             self.weight = self.weight + t.weight
         self.weight = self.weight / self.tweet_set.count() 
         super(Hash, self).save()

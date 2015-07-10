@@ -11,7 +11,7 @@ class TweetResource(MainResource):
 
     def gettweets(self, request, **kwargs):
         self.method_check(request, allowed=['get'])
-        tweets.delay()
+        tweets()
         resp = {'status': 'inprogress'}
         return self.create_response(request, resp)
 

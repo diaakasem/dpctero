@@ -18,12 +18,14 @@ api = tweepy.API(auth)
 def tweets():
     tweets = []
 
-    for tweet in tweepy.Cursor(api.search, q='egypt', rpp=100).items(10):
+    for tweet in tweepy.Cursor(api.search, q='ISIS', rpp=100).items(100):
         latitude = None
         longitude = None
         if tweet.geo:
-            latitude = tweet.geo.latitude
-            longitude = tweet.geo.longitude
+            latitude = None
+            longitude = None
+            #latitude = tweet.geo.latitude
+            #longitude = tweet.geo.longitude
         print dir(tweet)
         print '='*80
         print dir(tweet.author)

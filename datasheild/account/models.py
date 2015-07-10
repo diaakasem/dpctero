@@ -23,7 +23,7 @@ class Account(TimeStamped):
 
     def save(self):
         self.weight = 0
-        for t in self.tweet_set:
+        for t in self.tweet_set.all():
             self.weight = self.weight + t.weight
         super(Account, self).save()
 
