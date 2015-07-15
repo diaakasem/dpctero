@@ -15,7 +15,7 @@ angular.module('terrometerApp')
 
           $scope.getTweets = function() {
               Tweet.getTweets().then(function() {
-                  alert("DOne");
+                  console.log("Done loading tweets");
               });
           };
       }
