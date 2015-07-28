@@ -57,7 +57,8 @@ INSTALLED_APPS = (
 
     'tweet',
     'hash',
-    'account'
+    'account',
+    'process'
 )
 
 MIDDLEWARE_CLASSES = (

@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from datasheild.models import TimeStamped
 from datetime import datetime, timedelta
+from process.models import Process
 
 
 class Hash(TimeStamped):
@@ -12,6 +13,8 @@ class Hash(TimeStamped):
     # In Hours
     period = models.IntegerField(null=True)
     related_country = models.CharField(max_length=255, null=True)
+
+    process = models.ForeignKey(Process, null=True, related_name='hash_set')
 
     def save(self):
         #do some custom processing here: Example: convert Image resolution to a normalized value

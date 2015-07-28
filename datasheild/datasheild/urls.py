@@ -20,6 +20,7 @@ from django.conf.urls.static import static
 from django.conf import settings
 from tweet.api import TweetResource
 from hash.api import HashResource
+from process.api import ProcessResource
 from account.api import AccountResource
 import logging
 # Get an instance of a logger
@@ -30,6 +31,7 @@ v1_api = Api(api_name='v1')
 v1_api.register(TweetResource())
 v1_api.register(AccountResource())
 v1_api.register(HashResource())
+v1_api.register(ProcessResource())
 
 # API Entry Point
 urlpatterns = patterns('',

@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from hash.models import Hash
 from datasheild.models import TimeStamped
+from process.models import Process
 
 
 class Account(TimeStamped):
@@ -18,6 +19,7 @@ class Account(TimeStamped):
     verified = models.BooleanField(default=True)
     weight = models.PositiveIntegerField(null=True, default=100)
 
+    process = models.ForeignKey(Process, null=True, related_name='account_set')
     hashes = models.ManyToManyField(
         Hash, null=True, blank=True, related_name='account_set')
 
