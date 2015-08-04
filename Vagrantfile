@@ -3,8 +3,8 @@
 
 Vagrant::Config.run do |config|
 	# Base box to build off, and download URL for when it doesn't exist on the user's system already
-	config.vm.box = "precise32"
-	config.vm.box_url = "http://files.vagrantup.com/precise32.box"
+	config.vm.box = "ubuntu/trusty64"
+	config.vm.box_url = "http://files.vagrantup.com/ubuntu/trusty64.box"
 
 	# As an alternative to precise32, VMs can be built from the 'django-base' box as defined at
 	# https://github.com/torchbox/vagrant-django-base , which has more of the necessary server config
@@ -24,7 +24,7 @@ Vagrant::Config.run do |config|
 
 	# Forward a port from the guest to the host, which allows for outside
 	# computers to access the VM, whereas host only networking does not.
-	config.vm.forward_port 80, 80
+	config.vm.forward_port 80, 23232
 
 	# Share an additional folder to the guest VM. The first argument is
 	# an identifier, the second is the path on the guest to mount the
@@ -32,5 +32,5 @@ Vagrant::Config.run do |config|
 	config.vm.share_folder "project", "/home/vagrant/datashield", "."
 
 	# Enable provisioning with a shell script.
-	config.vm.provision :shell, :path => "setup/install.sh", :args => "seventy-seven"
+	config.vm.provision :shell, :path => "setup/install.sh", :args => "datasheild"
 end
