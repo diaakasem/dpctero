@@ -13,7 +13,7 @@ Vagrant::Config.run do |config|
 	# config.vm.box = "django-base-v2.1"
 	# config.vm.box_url = "http://vmimages.torchbox.com/django-base-v2.1.box"  # Torchbox-internal URL to django-base.box
 
-	config.vm.host_name = "datashield"
+	config.vm.host_name = "datasheild"
 
 	# Boot with a GUI so you can see the screen. (Default is headless)
 	# config.vm.boot_mode = :gui
@@ -24,12 +24,12 @@ Vagrant::Config.run do |config|
 
 	# Forward a port from the guest to the host, which allows for outside
 	# computers to access the VM, whereas host only networking does not.
-	config.vm.forward_port 80, 23232
+	config.vm.forward_port 80, 8080
 
 	# Share an additional folder to the guest VM. The first argument is
 	# an identifier, the second is the path on the guest to mount the
 	# folder, and the third is the path on the host to the actual folder.
-	config.vm.share_folder "project", "/home/vagrant/datashield", "."
+	config.vm.share_folder "project", "/home/vagrant/datasheild", "."
 
 	# Enable provisioning with a shell script.
 	config.vm.provision :shell, :path => "setup/install.sh", :args => "datasheild"
