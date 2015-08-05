@@ -3,7 +3,7 @@
 # Script to set up a Django project on Vagrant.
 
 if [ -z "$DB_NAME" ]; then 
-    echo "DJANGO_SETTINGS_MODULE='datasheild.settings' " >> /etc/environment
+    echo "DJANGO_SETTINGS_MODULE='datasheild.datasheild.settings' " >> /etc/environment
     echo "DB_NAME='datasheild'" >> /etc/environment
     echo "DB_USERNAME='datagurdian'" >> /etc/environment
     echo "DB_PASSWORD='123456'" >> /etc/environment
@@ -39,7 +39,7 @@ apt-get install -y git
 # (pip install pillow to get pillow itself, it is not in requirements.txt)
 apt-get install libffi-dev python-dev libpq-dev libjpeg-dev libpng12-dev \
 libfreetype6-dev libssl-dev build-essential python zlib1g-dev liblcms2-dev \
-nginx -y
+nginx libxml2-dev libxslt-dev lxml -y
 # python-setuptools being installed manually
 wget https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py -O - | python
 
@@ -64,8 +64,6 @@ sudo apt-get update -y
 sudo apt-get install nodejs -y
 sudo apt-get autoremove
 
-su - vagrant "cd $PROJECT_DIR && bower install && npm install"
-
 # Dev tools
 apt-get install -y ipython tmux
 
@@ -85,6 +83,7 @@ if [ -z $WORKON_HOME ]; then
     echo 'source /usr/local/bin/virtualenvwrapper.sh' >> /home/vagrant/.bashrc
     echo "workon $VIRTUALENV_NAME" >> /home/vagrant/.bashrc
     su - vagrant -c "mkdir -p /home/vagrant/.pip_download_cache"
+    source /home/vagrant/.bashrc
 fi
 
 # Node.js, CoffeeScript and LESS
@@ -105,8 +104,14 @@ su - vagrant -c "/usr/local/bin/virtualenv $VIRTUALENV_DIR && \
 # Set execute permissions on manage.py, as they get lost if we build from a zip file
 chmod a+x $DJANGO_DIR/manage.py
 
+su - vagrant "cd $PROJECT_DIR && \
+    bower install && \
+    npm install"
+
 # Django project setup
 su - vagrant -c "source $VIRTUALENV_DIR/bin/activate && \
+    cd $PROJECT_DIR && \
+    pip install -r requirements.txt && \
     cd $DJANGO_DIR && \
     ./manage.py makemigrations && \
     ./manage.py migrate && \
