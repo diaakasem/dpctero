@@ -28,7 +28,7 @@ Vagrant.configure(2) do |config|
 	# an identifier, the second is the path on the guest to mount the
 	# folder, and the third is the path on the host to the actual folder.
     #
-	config.vm.synced_folder ".", "/vagrant"
+	config.vm.synced_folder ".", "/home/vagrant/datasheild"
 
     # Enable provisioning with a shell script.
     # config.vm.provision :shell, :path => "setup/dev/install.sh", :args => "seventy-seven"
