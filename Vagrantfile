@@ -4,7 +4,7 @@ Vagrant.configure(2) do |config|
 	# Base box to build off, and download URL for when it doesn't exist on the user's system already
 	config.vm.box = "ubuntu/trusty32"
 	config.vm.host_name = "elproff.host"
-    config.vm.network "private_network", ip:"33.33.33.33"
+    config.vm.network "private_network", ip:"11.11.11.11"
 
     config.vm.provider "virtualbox" do |v|
           v.memory = 2048
