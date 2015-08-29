@@ -8,8 +8,15 @@ apt-get -y install curl git-core python-software-properties software-properties-
 if [ -z "$DB_NAME" ]; then 
     echo "DJANGO_SETTINGS_MODULE='datasheild.datasheild.settings' " >> /etc/environment
     echo "DB_NAME='datasheild'" >> /etc/environment
-    echo "DB_USERNAME='datagurdian'" >> /etc/environment
+    echo "DB_USER_NAME='datagurdian'" >> /etc/environment
+    echo "DB_HOST=localhost" >> /etc/environment
     echo "DB_PASSWORD='123456'" >> /etc/environment
+    echo "DB_PORT=5432" >> /etc/environment
+    # echo "DJANGO_SETTINGS_MODULE='seventy_seven.settings.production'" >> /etc/environment
+    echo "SECRET_KEY='s1kwb!&oy3l3(nzl&_=g7cd9-6yj&w*#jblh@*(dgo#x1j#r%d]'" >> /etc/environment
+    echo "DJANGO_TEMPLATE_DEBUG='true'" >> /etc/environment
+    echo "DJANGO_DEBUG='true'" >> /etc/environment
+    echo 'sysctl vm.overcommit_memory=1' >> /etc/sysctl.conf
 fi 
 source /etc/environment
 
@@ -17,7 +24,7 @@ source /etc/environment
 PROJECT_NAME=datasheild
 VIRTUALENV_NAME=$PROJECT_NAME
 PROJECT_DIR=/home/vagrant/$PROJECT_NAME
-DJANGO_DIR=/home/vagrant/$PROJECT_NAME/datasheild
+DJANGO_DIR=$PROJECT_DIR/$PROJECT_NAME
 VIRTUALENV_DIR=/home/vagrant/.virtualenvs/$PROJECT_NAME
 # End of Installation configuration
 PGSQL_VERSION='9.3'
@@ -182,7 +189,7 @@ su - vagrant -c "echo '{ \"interactive\": false }' > ~/.bowerrc"
 su - vagrant -c "\
 source $WORKON_HOME/$VIRTUALENV_NAME/bin/activate && \
 source /home/vagrant/.bashrc && \
-cd $PROJECT_DIR && \
+cd $DJANGO_DIR && \
 $VIRTUALENV_DIR/bin/python manage.py makemigrations && \
 $VIRTUALENV_DIR/bin/python manage.py migrate"
 
@@ -192,11 +199,11 @@ function piper() {
     # cd $PROJECT_DIR && $@"
     su - vagrant -c "\
     source /home/vagrant/.virtualenvs/$PROJECT_NAME/bin/activate && \
-    cd /home/vagrant/$PROJECT_NAME && $@"
+    cd $PROJECT_DIR && $@"
 }
 
 # Run servers PM2
-piper "node serv.js"
+piper "node run.js"
 # FIXME its not working properly
 env PATH=$PATH:/usr/local/bin:/usr/bin pm2 startup ubuntu -u vagrant
 chmod +x /etc/init.d/pm2-init.sh && update-rc.d pm2-init.sh defaults
