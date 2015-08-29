@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from datasheild.models import TimeStamped
+from datashield.models import TimeStamped
 from datetime import datetime, timedelta
 from process.models import Process
 

@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from hash.models import Hash
-from datasheild.models import TimeStamped
+from datashield.models import TimeStamped
 from process.models import Process
 
 

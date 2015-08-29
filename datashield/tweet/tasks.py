@@ -1,4 +1,4 @@
-from datasheild.settings import celery_app as app
+from datashield.settings import celery_app as app
 from .models import Tweet
 from account.models import Account
 import tweepy

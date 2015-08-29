@@ -6,8 +6,8 @@ apt-get -y install curl git-core python-software-properties software-properties-
 # Script to set up a Django project on Vagrant.
 
 if [ -z "$DB_NAME" ]; then 
-    echo "DJANGO_SETTINGS_MODULE='datasheild.datasheild.settings' " >> /etc/environment
-    echo "DB_NAME='datasheild'" >> /etc/environment
+    echo "DJANGO_SETTINGS_MODULE='datashield.datashield.settings' " >> /etc/environment
+    echo "DB_NAME='datashield'" >> /etc/environment
     echo "DB_USER_NAME='datagurdian'" >> /etc/environment
     echo "DB_HOST=localhost" >> /etc/environment
     echo "DB_PASSWORD='123456'" >> /etc/environment
@@ -21,7 +21,7 @@ fi
 source /etc/environment
 
 # Installation configuration
-PROJECT_NAME=datasheild
+PROJECT_NAME=datashield
 VIRTUALENV_NAME=$PROJECT_NAME
 PROJECT_DIR=/home/vagrant/$PROJECT_NAME
 DJANGO_DIR=$PROJECT_DIR/$PROJECT_NAME
@@ -130,6 +130,9 @@ apt-get -y install postgresql-$PGSQL_VERSION libpq-dev
 cp $PROJECT_DIR/setup/pg_hba.conf /etc/postgresql/$PGSQL_VERSION/main/
 cp $PROJECT_DIR/setup/postgresql.conf /etc/postgresql/$PGSQL_VERSION/main/
 /etc/init.d/postgresql reload
+
+# Enable nginx to load files
+chown :www-data $PROJECT_DIR -R
 
 # copy nginx configuration
 sudo cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak2

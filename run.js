@@ -4,8 +4,8 @@ pm2.connect(function() {
 
     // If developer's environment
     pm2.start({
-        name	: "datasheild-django",
-        script	: "datasheild/manage.py",
+        name	: "datashield-django",
+        script	: "datashield/manage.py",
         args	: ["runserver"],
         watch	: "true",
         cwd		: process.env.SEVEN_PATH,  

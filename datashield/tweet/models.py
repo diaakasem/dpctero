@@ -4,7 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 from account.models import Account
 from hash.models import Hash
 from process.models import Process
-from datasheild.models import TimeStamped
+from datashield.models import TimeStamped
 
 
 class Tweet(TimeStamped):
