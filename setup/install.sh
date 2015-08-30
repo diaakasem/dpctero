@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Linking the project
+su - vagrant -c "\
+ln -s /vagrant /home/vagrant/datashield"
+
 apt-get -y update
 apt-get -y install curl git-core python-software-properties software-properties-common
 
@@ -213,3 +217,6 @@ chmod +x /etc/init.d/pm2-init.sh && update-rc.d pm2-init.sh defaults
 sed -i 's:/root/.pm2:/home/vagrant/.pm2:g' /etc/init.d/pm2-init.sh
 chown vagrant:vagrant /home/vagrant/.pm2 -R
 piper "pm2 save"
+
+service nginx stop
+service nginx start

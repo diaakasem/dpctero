@@ -1,2 +1,2 @@
 #!/bin/bash
-celery -A seventy_seven worker -B
+celery -A datashield worker -B
