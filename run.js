@@ -8,13 +8,12 @@ pm2.connect(function() {
         script	: "datashield/manage.py",
         args	: ["runserver"],
         watch	: "true",
-        cwd		: process.env.SEVEN_PATH,  
+        cwd	: process.env.PROJECT_PATH,  
         exec_interpreter: "python",
     }, function(err, apps) {
         if (err) {
             console.log("ERROR with DJANGO");
-            console.log('PATH : ' + process.env.SEVEN_PATH);
-            console.log('PORT : ' + process.env.SEVEN_PORT);
+            console.log('PATH : ' + process.env.PROJECT_PATH);
             console.log(err);
         }
         console.log("Done with django");
@@ -25,12 +24,12 @@ pm2.connect(function() {
         name	: "celery-worker",
         script	: "setup/celery-worker.sh",
         watch	: "true",
-        cwd		: process.env.SEVEN_PATH,  
+        cwd	: process.env.PROJECT_PATH,  
         exec_interpreter: "bash",
     }, function(err, apps) {
         if (err) {
             console.log("ERROR with celery");
-            console.log("PATH : " + process.env.SEVEN_PATH);
+            console.log('PATH : ' + process.env.PROJECT_PATH);
             console.log(err);
         }
         console.log("Done with celery");

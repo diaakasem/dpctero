@@ -1,37 +1,36 @@
 #!/bin/bash
 
 # Linking the project
-su - vagrant -c "\
-ln -s /vagrant /home/vagrant/datashield"
+ln -s /vagrant /home/vagrant/datashield
 
 apt-get -y update
 apt-get -y install curl git-core python-software-properties software-properties-common
-
-# Script to set up a Django project on Vagrant.
-
-if [ -z "$DB_NAME" ]; then 
-    echo "DJANGO_SETTINGS_MODULE='datashield.datashield.settings' " >> /etc/environment
-    echo "DB_NAME='datashield'" >> /etc/environment
-    echo "DB_USER_NAME='datagurdian'" >> /etc/environment
-    echo "DB_HOST=localhost" >> /etc/environment
-    echo "DB_PASSWORD='123456'" >> /etc/environment
-    echo "DB_PORT=5432" >> /etc/environment
-    # echo "DJANGO_SETTINGS_MODULE='seventy_seven.settings.production'" >> /etc/environment
-    echo "SECRET_KEY='s1kwb!&oy3l3(nzl&_=g7cd9-6yj&w*#jblh@*(dgo#x1j#r%d]'" >> /etc/environment
-    echo "DJANGO_TEMPLATE_DEBUG='true'" >> /etc/environment
-    echo "DJANGO_DEBUG='true'" >> /etc/environment
-    echo 'sysctl vm.overcommit_memory=1' >> /etc/sysctl.conf
-fi 
-source /etc/environment
 
 # Installation configuration
 PROJECT_NAME=datashield
 VIRTUALENV_NAME=$PROJECT_NAME
 PROJECT_DIR=/home/vagrant/$PROJECT_NAME
 DJANGO_DIR=$PROJECT_DIR/$PROJECT_NAME
-VIRTUALENV_DIR=/home/vagrant/.virtualenvs/$PROJECT_NAME
 # End of Installation configuration
 PGSQL_VERSION='9.3'
+
+# Script to set up a Django project on Vagrant.
+if [ -z "$DB_NAME" ]; then 
+    echo "DJANGO_SETTINGS_MODULE=datashield.datashield.settings" >> /etc/environment
+    echo "DB_NAME='datashield'" >> /etc/environment
+    echo "DB_USER_NAME='datagurdian'" >> /etc/environment
+    echo "DB_HOST=localhost" >> /etc/environment
+    echo "DB_PASSWORD='123456'" >> /etc/environment
+    echo "DB_PORT=5432" >> /etc/environment
+    echo "SECRET_KEY='s1kwb!&oy3l3(nzl&_=g7cd9-6yj&w*#jblh@*(dgo#x1j#r%d]'" >> /etc/environment
+    echo "DJANGO_TEMPLATE_DEBUG='true'" >> /etc/environment
+    echo "DJANGO_DEBUG='true'" >> /etc/environment
+    echo 'sysctl vm.overcommit_memory=1' >> /etc/sysctl.conf
+    echo "PROJECT_PATH=$PROJECT_DIR" >> /etc/environment
+fi 
+source /etc/environment
+
+chown vagrant:vagrant /home/vagrant -R
 
 # Need to fix locale so that Postgres creates databases in UTF-8
 locale-gen en_GB.UTF-8
@@ -47,12 +46,7 @@ apt-get -y install curl
 # Nodejs
 curl -sL https://deb.nodesource.com/setup_0.12 | sudo bash -
 # Java 8
-add-apt-repository -y ppa:webupd8team/java
-# Elastic Search
-wget -O - http://packages.elasticsearch.org/GPG-KEY-elasticsearch | apt-key add -
-echo 'deb http://packages.elasticsearch.org/elasticsearch/1.4/debian stable main' | tee /etc/apt/sources.list.d/elasticsearch.list
-# Logstash
-echo 'deb http://packages.elasticsearch.org/logstash/1.5/debian stable main' | tee /etc/apt/sources.list.d/logstash.list
+# add-apt-repository -y ppa:webupd8team/java
 
 # Install essential packages from Apt
 apt-get -y update
@@ -86,42 +80,9 @@ service redis-server restart
 
 # Installing Java 8
 # Set Agreement = True, Seen = True
-echo debconf shared/accepted-oracle-license-v1-1 select true | debconf-set-selections
-echo debconf shared/accepted-oracle-license-v1-1 seen true | debconf-set-selections
-apt-get -y install oracle-java8-installer
-
-# Install Elasticsearch 1.4.5 - for ease of installation
-apt-get -y install elasticsearch
-sudo service elasticsearch start
-# Find the line that specifies network.host, uncomment it,
-# and replace its value with "localhost" so it looks like this:
-# network.host: localhost
-# sed -i 's/.*network.host.*/network.host: localhost/g' /etc/elasticsearch/elasticsearch.yml
-service elasticsearch restart
-update-rc.d elasticsearch defaults 95 10
-curl -XPUT 'http://localhost:9200/sevenlogs/'
-curl -XPUT 'http://localhost:9200/nginxlogs/'
-
-# logstash
-apt-get -y install logstash
-cp $PROJECT_DIR/setup/dev/logstash.conf /etc/logstash/conf.d/
-service logstash restart
-
-# Install Kibana 4 ui
-if [ ! -f ~/kibanadir/kibana-4.1.0-linux-x64.tar.gz ]; then
-    mkdir ~/kibanadir
-    cd ~/kibanadir
-    wget https://download.elastic.co/kibana/kibana/kibana-4.1.1-linux-x86.tar.gz
-    tar xvf kibana-*.tar.gz
-    mkdir -p /opt/kibana
-    # sed -i 's/.*host:.*/host: "localhost"/g' ~/kibanadir/kibana-4.1.1-linux-x86/config/kibana.yml
-    cp -R ~/kibanadir/kibana-4*/* /opt/kibana/
-    cp $PROJECT_DIR/setup/kibana4.sh /etc/init.d/kibana4
-    chmod +x /etc/init.d/kibana4
-    update-rc.d kibana4 defaults 96 9
-    service kibana4 start
-    cd ~
-fi
+#echo debconf shared/accepted-oracle-license-v1-1 select true | debconf-set-selections
+#echo debconf shared/accepted-oracle-license-v1-1 seen true | debconf-set-selections
+#apt-get -y install oracle-java8-installer
 
 # python-setuptools being installed manually
 which easy_install || wget https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py -O - | python
@@ -149,16 +110,10 @@ apt-get -y install ipython tmux python-sphinx nmap
 # virtualenv global setup
 which pip || easy_install -U pip
 
-pip install virtualenv virtualenvwrapper stevedore virtualenv-clone
-
 # bash environment global setup
 source /home/vagrant/.bashrc
 if [ -z $WORKON_HOME ]; then
-    WORKON_HOME=/home/vagrant/.virtualenvs
-    echo 'export WORKON_HOME=$HOME/.virtualenvs' >> /home/vagrant/.bashrc
     echo 'export PIP_DOWNLOAD_CACHE=$HOME/.pip_download_cache' >> /home/vagrant/.bashrc
-    echo 'source /usr/local/bin/virtualenvwrapper.sh' >> /home/vagrant/.bashrc
-    echo "workon $VIRTUALENV_NAME" >> /home/vagrant/.bashrc
     su - vagrant -c "source /home/vagrant/.bashrc"
     su - vagrant -c "mkdir -p /home/vagrant/.pip_download_cache"
 fi
@@ -178,35 +133,29 @@ psql -Upostgres -c "ALTER USER $DB_USER_NAME CREATEDB;"
 psql -Upostgres -c "GRANT ALL PRIVILEGES ON DATABASE $DB_NAME to $DB_USER_NAME;"
 
 
-# virtualenv setup for project
-# FIXME I'm not sure if we need the source down here ( dont remove unless needed)
-su - vagrant -c "/usr/local/bin/virtualenv $VIRTUALENV_DIR && \
-echo $PROJECT_DIR > $VIRTUALENV_DIR/.project && \
-source $WORKON_HOME/$VIRTUALENV_NAME/bin/activate && \
-$VIRTUALENV_DIR/bin/pip install -r $PROJECT_DIR/requirements.txt"
+pip install -r $PROJECT_DIR/requirements.txt
+
+# Install celery executable
+pip install celery
 
 # Set execute permissions on manage.py, as they get lost if we build from a zip file
 chmod a+x $DJANGO_DIR/manage.py
 
 # Set no interactive for bower
 su - vagrant -c "echo '{ \"interactive\": false }' > ~/.bowerrc"
+echo '{ \"interactive\": false }' > ~/.bowerrc
 
 # Django project setup
-# TODO Move the initial_data_.json in a single step
-su - vagrant -c "\
-source $WORKON_HOME/$VIRTUALENV_NAME/bin/activate && \
-source /home/vagrant/.bashrc && \
-cd $DJANGO_DIR && \
-$VIRTUALENV_DIR/bin/python manage.py makemigrations && \
-$VIRTUALENV_DIR/bin/python manage.py migrate"
+cd $PROJECT_DIR
+DJANGO_SETTINGS_MODULE=datashield.settings $DJANGO_DIR/manage.py makemigrations
+DJANGO_SETTINGS_MODULE=datashield.settings $DJANGO_DIR/manage.py migrate
+cd -
 
 function piper() {
     # Run servers PM2
     # source $WORKON_HOME/$VIRTUALENV_NAME/bin/activate && \
     # cd $PROJECT_DIR && $@"
-    su - vagrant -c "\
-    source /home/vagrant/.virtualenvs/$PROJECT_NAME/bin/activate && \
-    cd $PROJECT_DIR && $@"
+    cd $PROJECT_DIR && $@
 }
 
 # Run servers PM2
@@ -215,6 +164,7 @@ piper "node run.js"
 env PATH=$PATH:/usr/local/bin:/usr/bin pm2 startup ubuntu -u vagrant
 chmod +x /etc/init.d/pm2-init.sh && update-rc.d pm2-init.sh defaults
 sed -i 's:/root/.pm2:/home/vagrant/.pm2:g' /etc/init.d/pm2-init.sh
+mkdir -p /home/vagrant/.pm2
 chown vagrant:vagrant /home/vagrant/.pm2 -R
 piper "pm2 save"
 
